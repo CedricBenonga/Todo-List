@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% import "bootstrap5/form.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+<div class="container" style="margin-top: 50px; margin-bottom: 20px;">
+    <div class="row">
+
+        <!-- Displaying flashed message -->
+        <div class="col-lg-8 col-md-10 mx-auto content">
+            <h1>Login</h1>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {{ wtf.render_form(form, novalidate=True, button_map={"submit": "btn btn-outline-dark"}) }}
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
+{% endblock %}

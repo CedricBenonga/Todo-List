@@ -1,0 +1,78 @@
+{% include "header.html" %}
+
+<!-- Calendar Section -->
+<section>
+    <container>
+        <div>
+            <form action="{{ url_for('date_selector') }}" method="post">
+                <a><i class="fa fa-2x fa-solid fa-calendar"
+                  style="margin-top: 10px; margin-left: 15px; color: #000;"></i></a>
+                <input type="date" name="date" required>
+                <button type="submit" style="background: #545454;"
+                        onMouseOut="this.style.color='#000'"
+                        onMouseOver="this.style.color='#999'">Confirm date</button>
+            </form>
+        </div>
+    </container>
+</section>
+<!--  End of Calendar Section -->
+
+<div class="container task">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {% if current_user.is_authenticated and no_task == [] %}
+                <h1>My TODO List</h1>
+                <h3 style="color: green;">You do not have any task yet!</h3>
+            {% elif current_user.is_authenticated %}
+                <h1>My TODO List</h1>
+            {% else %}
+                <h1>Welcome!</h1>
+                <h3>Please "Login" or "Signup" <br> and get started with your "TODO List".</h3>
+            {% endif %}
+
+            <!-- Feedback to a non-registered checking date -->
+            <div style="color: red;">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            </div>
+
+            <!-- Tasks layout -->
+            {% for post in all_posts %}
+            {% if post.user_id == current_user.id and post.date == selected_date %}
+            <div class="post-preview">
+                <h3><a href="{{url_for('edit_task', post_id=post.id)}}"
+                   onMouseOut="this.style.color='#000'"
+                   onMouseOver="this.style.color='#999'">{{post.name}}</a></h3>
+                <a href="{{url_for('edit_task', post_id=post.id)}}"
+                   onMouseOut="this.style.color='#000'"
+                    onMouseOver="this.style.color='#999'">{{post.date}}</a> -
+                <a class="post-a" href="{{url_for('confirm_delete', post_id=post.id) }}"
+                   onMouseOut="this.style.color='#000'"
+                    onMouseOver="this.style.color='red'">Delete</a>
+            </div>
+            <hr>
+            {% endif %}
+            {% endfor %}
+
+            <!-- Telling the client that they have no task on the selected date -->
+            {% if no_task == [] %}
+                <h3 style="color: red;">You have no task on {{selected_date}}</h3>
+            {% endif %}
+
+            <!-- Adding a New Task -->
+            <div class="clearfix">
+                <a class="btn btn-outline-success float-right" href="{{url_for('add_new_post')}}"
+                   style="border-radius: 5%;">New Task</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<hr>
+
+{% include "footer.html" %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import "bootstrap5/form.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+<!--Creating form with a customized button and a pop-up error message-->
+<div class="container" style="margin-top: 100px;">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto content">
+      {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+      {{ wtf.render_form(form, novalidate=True, button_map={"submit": "btn btn-outline-dark"}) }}
+    </div>
+  </div>
+</div>
+<!-- End of form -->
+
+{% include "footer.html" %}
+{% endblock %}
