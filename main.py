@@ -100,8 +100,6 @@ def home():
                 user_tasks.append(post)
     except AttributeError:
         pass
-        # flash("Please Sign In or Sign Up first!")
-        # return redirect(url_for('date_selector'))
 
     return render_template("index.html", all_posts=posts, user_tasks=user_tasks)
 
